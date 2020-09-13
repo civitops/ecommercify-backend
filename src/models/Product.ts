@@ -1,38 +1,40 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import { IProduct } from "./interfaces/IProduct";
+import { ImageSchema } from "./Schemas";
+const review = new Schema(
+  {
+    rating: { type: Number, required: true },
+    comment: String,
+    images: [String],
+  },
+  { _id: false }
+);
+const attributeVal = new Schema(
+  {
+    attribute: { type: String, required: true },
+    value: { type: String, required: true },
+  },
+  { _id: false }
+);
+
 const productSchema = new Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true, index: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
-  features: [
+  features: [String],
+  images: [ImageSchema],
+  specifications: [attributeVal],
+
+  variant: [
     {
-      attribute: { type: String, required: true },
-      value: { type: String, required: true },
+      attribute: String,
+      values: [{ name: Number, price: Number, quantity: Number }],
     },
   ],
-  images: [String],
-  specifications: [
-    {
-      attribute: { type: String, required: true },
-      value: { type: String, required: true },
-    },
-  ],
-  quantity: { type: Number, required: true },
-  category: [String],
-  saleCount: Number,
-  view: Number,
-  cartAddCount: Number,
-  cartDiscardCount: Number,
-  review: [
-    {
-      rating: { type: Number, required: true },
-      comment: String,
-      images: [String],
-    },
-  ],
-  tag: {
-    type: String,
-    enum: ["NEW", "HOT", "TRENDING"],
-  },
+  actualPrice: Number,
+  price: { type: Number },
+  quantity: Number,
+  reviews: [review],
 });
-export const Product = model<IProduct>("Product", productSchema);
+const Product = model<IProduct>("Product", productSchema);
+export default Product;

@@ -1,17 +1,17 @@
 import { Schema, model, Types } from "mongoose";
+import { IOrder } from "./interfaces/IOrder";
+import {AddressSchema} from "./Schemas"
 const orderSchema = new Schema({
+  name: { type: String, required: true },
+  phoneNo: { type: String, required: true },
   customer: { type: Types.ObjectId, required: true },
-  products: { type: Types.ObjectId, required: true },
+  product: { type: Types.ObjectId, required: true },
+  actualAmount: { type: Number, required: true },
   amount: { type: Number, required: true },
-  shippingAddress: {
-    name: { type: String, required: true },
-    contactNo: { type: String, required: true },
-    addressLine1: { type: String, required: true },
-    addressLine2: String,
-    landmark: { type: String, required: true },
-    city: { type: String, required: true },
-    pincode: String,
-  },
+  amountPaid: Boolean,
+  paymentMode: { type: String, enum: ["COD", "ONLINE"] },
+  discountApplied: Types.ObjectId,
+  shippingAddress: AddressSchema,
   status: {
     type: String,
     enum: [
@@ -24,3 +24,4 @@ const orderSchema = new Schema({
     ],
   },
 });
+export const Order = model<IOrder>("Order", orderSchema);
