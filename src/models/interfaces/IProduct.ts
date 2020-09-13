@@ -1,38 +1,31 @@
 import { Document } from "mongoose";
-enum Tag {
-  HOT,
-  TRENDING,
-  NEW,
-}
+
 export interface IProduct extends Document {
   name: string;
   title: string;
   description: string;
-  features: [
-    {
-      attribute: string;
-      value: string;
-    }
-  ];
+  features?: [string];
   images?: [string];
-  specifications: [
+  specifications?: [
     {
       attribute: string;
       value: string;
     }
   ];
   quantity: number;
-  category: [string];
-  saleCount?: number;
-  view?: number;
-  cartAddCount?: number;
-  cartDiscardCount?: number;
-  review?: [
+  variant?: [
     {
-      rating: number;
-      comment: string;
-      images: [string];
+      attribute: string;
+      values: [{ name: string; price: Number; quantity: Number }];
     }
   ];
-  tag: Tag;
+  actualPrice: number;
+  price: number;
+  reviews?: [
+    {
+      rating: number;
+      comment?: string;
+      images?: [string];
+    }
+  ];
 }
